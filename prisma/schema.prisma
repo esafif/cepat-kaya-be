@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userID   String  @id
+  username String  @unique
+  password String
+  role     String // e.g., 'admin', 'cashier', 'manager'
+  email    String
+  fullname String
+  isActive Boolean @default(true)
+
+  // categoriesCreated Category[] @relation("categoriesCreated")
+  // categoriesUpdated Category[] @relation("categoriesUpdated")
+
+  // productsCreated   Product[]   @relation("productsCreated")
+  // productsUpdated   Product[]   @relation("productsUpdated")
+
+  // ordersCreated     Order[]     @relation("ordersCreated")
+  // ordersUpdated     Order[]     @relation("ordersUpdated")
+
+  // paymentsCreated   Payment[]   @relation("paymentsCreated")
+  // paymentsUpdated   Payment[]   @relation("paymentsUpdated")
+
+  employeesManaged Employee[] @relation("employeesManaged")
+
+  employeesCreated Employee[] @relation("employeesCreated")
+  employeesUpdated Employee[] @relation("employeesUpdated")
+
+  storesCreated Store[] @relation("storesCreated")
+  storesUpdated Store[] @relation("storesUpdated")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user")
+}
+
+model Employee {
+  employeeID     String @id
+  name           String
+  role           String // e.g., 'Cashier', 'Manager'
+  contactDetails String
+  shiftHours     String
+
+  managerID String?
+  manager   User?   @relation("employeesManaged", fields: [managerID], references: [userID])
+  Store     Store[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdById String?
+  updatedById String?
+  createdBy   User?   @relation("employeesCreated", fields: [createdById], references: [userID])
+  updatedBy   User?   @relation("employeesUpdated", fields: [updatedById], references: [userID])
+
+  @@map("employee")
+}
+
+model Store {
+  userID         String @id
+  location       String
+  contactDetails String
+
+  storeManager   Employee @relation(fields: [storeManagerID], references: [employeeID])
+  storeManagerID String
+
+  // inventory     Inventory[]
+
+  createdById String?
+  updatedById String?
+  createdBy   User?   @relation("storesCreated", fields: [createdById], references: [userID])
+  updatedBy   User?   @relation("storesUpdated", fields: [updatedById], references: [userID])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("store")
+}
