@@ -1,15 +1,20 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, ResCreateUser } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { WebResponse } from 'src/entities/web.entity';
 
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<WebResponse<ResCreateUser>> {
+    const result = await this.usersService.register(createUserDto)
+
+    return {
+      data: result
+    }
   }
 
   @Get()
