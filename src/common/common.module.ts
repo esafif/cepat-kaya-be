@@ -4,21 +4,32 @@ import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston'
 import { PrismaService } from './prisma.service';
 import { ValidationService } from './validation.service';
+import { APP_FILTER } from '@nestjs/core';
+import { ErrorFilter } from './error.filter';
+import { format } from "winston";
 
 @Global()
 @Module({
   imports: [
     WinstonModule.forRoot({
-      format: winston.format.json(),
+      format: format.combine(
+        format.colorize(), // Menambahkan warna pada output console
+        format.printf(({ level, message }) => {
+          return `[${level}]: ${message}`; // Format log kustom
+        })
+      ),
       transports: [
-        new winston.transports.Console
+        new winston.transports.Console()
       ]
     }),
     ConfigModule.forRoot({
       isGlobal: true
     })
   ],
-  providers: [PrismaService, ValidationService],
+  providers: [PrismaService, ValidationService, {
+    provide: APP_FILTER,
+    useClass: ErrorFilter
+  }],
   exports: [PrismaService, ValidationService]
 })
 export class CommonModule { }

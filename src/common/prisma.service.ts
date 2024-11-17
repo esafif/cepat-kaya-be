@@ -34,16 +34,16 @@ export class PrismaService extends PrismaClient<Prisma.PrismaClientOptions, stri
 
   onModuleInit() {
     this.$on('info', (e) => {
-      this.logger.info(e)
+      this.logger.info(e.message, null, 2)
     })
     this.$on('warn', (e) => {
-      this.logger.info(e)
+      this.logger.warn(e.message)
     })
     this.$on('error', (e) => {
-      this.logger.info(e)
+      this.logger.error(e.message)
     })
     this.$on('query', (e) => {
-      this.logger.info(e)
+      this.logger.info(e.query)
     })
   }
 }

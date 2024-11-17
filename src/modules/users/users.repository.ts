@@ -1,7 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '../../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../../common/prisma.service';
 
 @Injectable()
@@ -26,11 +25,7 @@ export class UsersRepository {
       updatedAt: new Date()
     };
 
-    try {
-      await this.prismaService.user.create({ data: user });
-    } catch (error) {
-      console.log(error, "<<< this is error")
-    }
+    await this.prismaService.user.create({ data: user });
 
     return user;
   }
