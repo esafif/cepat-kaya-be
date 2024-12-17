@@ -11,12 +11,13 @@ export class UsersRepository {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const { username, password, role, email, fullname } = createUserDto
+    const { username, password, role, email, fullname, phone } = createUserDto
 
     const user: User = {
       userID: Date.now().toString(), ...createUserDto,
       username,
       password,
+      phone,
       role,
       email,
       fullname,
@@ -24,6 +25,8 @@ export class UsersRepository {
       createdAt: new Date(),
       updatedAt: new Date()
     };
+
+
 
     await this.prismaService.user.create({ data: user });
 

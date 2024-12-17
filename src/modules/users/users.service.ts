@@ -32,6 +32,7 @@ export class UsersService {
       userID,
       username,
       email,
+      phone,
       fullname,
       createdAt,
       updatedAt
@@ -41,6 +42,7 @@ export class UsersService {
       userID,
       username,
       email,
+      phone,
       fullname,
       createdAt,
       updatedAt

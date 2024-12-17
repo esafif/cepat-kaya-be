@@ -2,6 +2,7 @@ export class CreateUserDto {
   username: string;
   password: string;
   email: string;
+  phone: string;
   fullname: string;
   role: string;
   isActive?: boolean;
@@ -13,6 +14,7 @@ export class ResCreateUser {
   userID: string;
   fullname: string;
   username: string;
+  phone: string;
   email: string;
   createdAt: Date;
   updatedAt: Date;

@@ -33,6 +33,7 @@ describe('UserController Test', () => {
       .send({
         "username": "",
         "password": "",
+        "phone": "",
         "email": "",
         "fullname": "",
         "role": ""
@@ -49,6 +50,7 @@ describe('UserController Test', () => {
         "username": "usernametest",
         "password": "password321",
         "email": "test@test.com",
+        "phone": "082120015259",
         "fullname": "Safif Rafi Effendy",
         "role": "owner"
       })
