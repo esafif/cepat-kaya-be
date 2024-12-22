@@ -7,6 +7,8 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { UserValidation } from './users.validation';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from "bcrypt";
+import { LoginUserRequest, LoginUserResponse } from './dto/login-user.dto';
+
 
 
 @Injectable()
@@ -47,6 +49,35 @@ export class UsersService {
       createdAt,
       updatedAt
     }
+  }
+
+  async login(request: LoginUserRequest): Promise<LoginUserResponse> {
+    this.logger.info(`Login user ${JSON.stringify(request)}`);
+    const loginRequest: LoginUserRequest = this.validationService.validate(UserValidation.LOGIN, request);
+    let user = await this.userRepository.findByEmail(loginRequest.username);
+
+    if (!user) {
+      throw new HttpException(`Username or password is invalid`, 404);
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password);
+    if (!isPasswordValid) {
+      throw new HttpException(`Username or password is invalid`, 404);
+    }
+
+    user = await this.userRepository.update(user.userID)
+
+    const {
+      userID,
+      username,
+      token
+    } = user;
+
+    return {
+      userID,
+      username,
+      token
+    };
   }
 
   create(createUserDto: CreateUserDto) {

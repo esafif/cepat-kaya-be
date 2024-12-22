@@ -9,4 +9,9 @@ export class UserValidation {
     fullname: z.string().min(5).max(100),
     role: z.enum(["owner", "partner"]),
   })
+
+  static readonly LOGIN: ZodType = z.object({
+    username: z.string().min(5).max(100),
+    password: z.string().min(7).max(100),
+  })
 }

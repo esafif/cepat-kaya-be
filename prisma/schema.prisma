@@ -24,8 +24,9 @@ model User {
   password  String
   phone     String   @unique
   role      String // e.g., 'owner', 'partner'
-  email     String
+  email     String   @unique
   fullname  String
+  token     String?
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

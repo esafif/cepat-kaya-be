@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto, ResCreateUser } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { WebResponse } from 'src/entities/web.entity';
+import { LoginUserRequest, LoginUserResponse } from './dto/login-user.dto';
 
 @Controller('api/users')
 export class UsersController {
@@ -11,6 +12,15 @@ export class UsersController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto): Promise<WebResponse<ResCreateUser>> {
     const result = await this.usersService.register(createUserDto)
+
+    return {
+      data: result
+    }
+  }
+
+  @Post('/login')
+  async login(@Body() loginRequest: LoginUserRequest): Promise<WebResponse<LoginUserResponse>> {
+    const result = await this.usersService.login(loginRequest)
 
     return {
       data: result

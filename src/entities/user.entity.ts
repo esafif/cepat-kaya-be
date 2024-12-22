@@ -7,6 +7,7 @@ export class User {
   email: string;
   fullname: string;
   isActive: boolean;
+  token?: string;
   createdAt: Date;
   updatedAt: Date
 }

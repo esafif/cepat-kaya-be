@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from '../../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '../../common/prisma.service';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UsersRepository {
@@ -26,11 +27,17 @@ export class UsersRepository {
       updatedAt: new Date()
     };
 
-
-
     await this.prismaService.user.create({ data: user });
 
     return user;
+  }
+
+  async findByEmail(username: string): Promise<User> {
+    return this.prismaService.user.findUnique({
+      where: {
+        username
+      }
+    });
   }
 
   async count(email: string): Promise<number> {
@@ -39,6 +46,19 @@ export class UsersRepository {
         email
       }
     })
+  }
+
+  async update(id: string): Promise<User> {
+    const user = await this.prismaService.user.update({
+      where: {
+        userID: id
+      },
+      data: {
+        token: uuid()
+      }
+    });
+
+    return user;
   }
 
   // findOne(id: string): User {
