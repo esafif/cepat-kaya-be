@@ -8,6 +8,7 @@ import { UserValidation } from './users.validation';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from "bcrypt";
 import { LoginUserRequest, LoginUserResponse } from './dto/login-user.dto';
+import { User } from '@prisma/client';
 
 
 
@@ -80,6 +81,27 @@ export class UsersService {
     };
   }
 
+  async update(user: User, request: UpdateUserDto): Promise<UpdateUserDto> {
+    this.logger.info(`Update user ${JSON.stringify(request)}`);
+    const updateRequest: UpdateUserDto = this.validationService.validate(UserValidation.UPDATE, request);
+
+    if (updateRequest.fullname) {
+      user.fullname = updateRequest.fullname;
+    }
+
+    if (updateRequest.password) {
+      user.password = await bcrypt.hash(updateRequest.password, 10);
+    }
+
+    const updatedUser = await this.userRepository.updateUser(user);
+
+    return updatedUser;
+  }
+
+  async get(user: User): Promise<User> {
+    return user;
+  }
+
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
@@ -90,10 +112,6 @@ export class UsersService {
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
   }
 
   remove(id: number) {

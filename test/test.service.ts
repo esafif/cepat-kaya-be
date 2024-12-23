@@ -26,7 +26,8 @@ export class TestService {
         email: 'test@example.com',
         phone: '1234567890',
         role: 'user',
-        fullname: 'Test User'
+        fullname: 'Test User',
+        token: 'test'
       }
     })
   }

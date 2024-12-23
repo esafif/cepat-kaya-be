@@ -3,6 +3,7 @@ import { User } from '../../entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PrismaService } from '../../common/prisma.service';
 import { v4 as uuid } from 'uuid';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersRepository {
@@ -56,6 +57,17 @@ export class UsersRepository {
       data: {
         token: uuid()
       }
+    });
+
+    return user;
+  }
+
+  async updateUser(data: User): Promise<User> {
+    const user = await this.prismaService.user.update({
+      where: {
+        userID: data.userID
+      },
+      data
     });
 
     return user;

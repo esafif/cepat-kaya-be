@@ -22,7 +22,9 @@ describe('UserController Test', () => {
 
     logger = app.get(WINSTON_MODULE_PROVIDER);
     testService = app.get(TestService);
+  });
 
+  afterEach(async () => {
     // Reset user data sebelum setiap tes
     await testService.deleteUser();
   });
@@ -79,6 +81,80 @@ describe('UserController Test', () => {
         userID: expect.any(String),
         username: 'usernametest',
         token: expect.any(String),
+      });
+    });
+  });
+
+  describe('GET /api/users/current', () => {
+    beforeEach(async () => {
+      // Buat user sebelum tes login
+      await testService.deleteUser();
+      await testService.createUser();
+    });
+
+    it('should be rejected token invalid', async () => {
+      const response: any = await request(app.getHttpServer())
+        .get('/api/users/current')
+        .set('Authorization', 'wrong')
+
+      logger.info(response.body);
+
+      expect(response.status).toBe(401);
+      expect(response.body.errors).toBeDefined();
+    });
+
+    it('should get current user', async () => {
+      const response: any = await request(app.getHttpServer())
+        .get('/api/users/current')
+        .set('Authorization', 'test');
+
+      logger.info(response.body);
+
+      expect(response.status).toBe(200);
+      expect(response.body.data).toMatchObject({
+        userID: expect.any(String),
+        username: 'usernametest',
+        token: 'test',
+      });
+    });
+  });
+
+  describe('PUT /api/users', () => {
+    beforeEach(async () => {
+      // Buat user sebelum tes login
+      await testService.deleteUser();
+      await testService.createUser();
+    });
+
+    it('should be rejected token invalid', async () => {
+      const response: any = await request(app.getHttpServer())
+        .put('/api/users')
+        .set('Authorization', 'wrong')
+        .send({
+          fullname: 'Safif Rafi Effendy',
+          password: 'password321',
+        });
+
+      logger.info(response.body);
+
+      expect(response.status).toBe(401);
+      expect(response.body.errors).toBeDefined();
+    });
+
+    it('should update user', async () => {
+      const response: any = await request(app.getHttpServer())
+        .put('/api/users')
+        .set('Authorization', 'test')
+        .send({
+          fullname: 'Safif Rafi Effendy',
+          password: 'password321',
+        });
+
+      logger.info(response.body);
+
+      expect(response.status).toBe(201);
+      expect(response.body.data).toMatchObject({
+        fullname: 'Safif Rafi Effendy',
       });
     });
   });
