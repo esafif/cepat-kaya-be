@@ -49,13 +49,13 @@ export class UsersRepository {
     })
   }
 
-  async update(id: string): Promise<User> {
+  async update(id: string, logout: boolean = false): Promise<User> {
     const user = await this.prismaService.user.update({
       where: {
         userID: id
       },
       data: {
-        token: uuid()
+        token: !logout ? uuid() : null
       }
     });
 

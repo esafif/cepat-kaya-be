@@ -41,6 +41,12 @@ export class UsersController {
     return { data: await this.usersService.update(user, updateUserDto) };
   }
 
+  @Post('/logout')
+  @HttpCode(204)
+  async logout(@Auth() user: User): Promise<void> {
+    await this.usersService.logout(user);
+  }
+
   @Get()
   findAll() {
     return this.usersService.findAll();

@@ -98,6 +98,10 @@ export class UsersService {
     return updatedUser;
   }
 
+  async logout(user: User): Promise<any> {
+    await this.userRepository.update(user.userID, true);
+  }
+
   async get(user: User): Promise<User> {
     return user;
   }

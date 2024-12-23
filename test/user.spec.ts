@@ -158,4 +158,33 @@ describe('UserController Test', () => {
       });
     });
   });
+
+  describe('Logout /api/users', () => {
+    beforeEach(async () => {
+      // Buat user sebelum tes login
+      await testService.deleteUser();
+      await testService.createUser();
+    });
+
+    it('should be rejected token invalid', async () => {
+      const response: any = await request(app.getHttpServer())
+        .post('/api/users/logout')
+        .set('Authorization', 'wrong');
+
+      logger.info(response.body);
+
+      expect(response.status).toBe(401);
+      expect(response.body.errors).toBeDefined();
+    });
+
+    it('should logout user', async () => {
+      const response: any = await request(app.getHttpServer())
+        .post('/api/users/logout')
+        .set('Authorization', 'test');
+
+      logger.info(response.body);
+
+      expect(response.status).toBe(204);
+    });
+  });
 });
