@@ -4,8 +4,8 @@ import { CreateUserDto, ResCreateUser } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { WebResponse } from 'src/entities/web.entity';
 import { LoginUserRequest, LoginUserResponse } from './dto/login-user.dto';
-import { User } from '@prisma/client';
 import { Auth } from '../../common/auth.decorator';
+import { User } from '../../entities/user.entity';
 
 @Controller('api/users')
 export class UsersController {
@@ -63,6 +63,7 @@ export class UsersController {
   // }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: string) {
     return this.usersService.remove(+id);
   }

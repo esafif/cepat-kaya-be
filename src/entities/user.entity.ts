@@ -1,13 +1,15 @@
+import { Role as UserRole } from '@prisma/client';
+
 export class User {
   userID: string;
   username: string;
   password: string;
   phone: string;
-  role: string;
+  role: UserRole;
   email: string;
   fullname: string;
-  isActive: boolean;
   token?: string;
+  isActive: boolean;
   createdAt: Date;
-  updatedAt: Date
+  updatedAt: Date;
 }

@@ -1,4 +1,4 @@
-import { z, ZodBranded, ZodType } from "zod"
+import { z, ZodType } from "zod"
 
 export class UserValidation {
   static readonly REGISTER: ZodType = z.object({
@@ -7,7 +7,7 @@ export class UserValidation {
     password: z.string().min(7).max(100),
     phone: z.string().min(7).max(20),
     fullname: z.string().min(5).max(100),
-    role: z.enum(["owner", "partner"]),
+    role: z.enum(["OWNER", "PARTNER"]),
   })
 
   static readonly LOGIN: ZodType = z.object({

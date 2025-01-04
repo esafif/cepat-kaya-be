@@ -8,7 +8,7 @@ import { UserValidation } from './users.validation';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from "bcrypt";
 import { LoginUserRequest, LoginUserResponse } from './dto/login-user.dto';
-import { User } from '@prisma/client';
+import { User } from '../../entities/user.entity';
 
 
 

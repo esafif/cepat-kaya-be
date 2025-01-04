@@ -18,18 +18,111 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  OWNER
+  PARTNER
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+  TRANSFER
+}
+
 model User {
-  userID    String   @id
-  username  String   @unique
-  password  String
-  phone     String   @unique
-  role      String // e.g., 'owner', 'partner'
-  email     String   @unique
-  fullname  String
-  token     String?
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  userID      String        @id
+  username    String        @unique
+  password    String
+  phone       String        @unique
+  role        Role
+  email       String        @unique
+  fullname    String
+  token       String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Category    Category[]
+  Account     Account[]
+  Transaction Transaction[]
+  Budget      Budget[]
 
   @@map("user")
+}
+
+model Category {
+  categoryID  String        @id
+  name        String        @unique
+  description String?
+  userID      String
+  type        CategoryType
+  icon        String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  createdBy   User          @relation(fields: [userID], references: [userID])
+  Transaction Transaction[]
+  Budget      Budget[]
+
+  @@index([userID])
+  @@map("category")
+}
+
+model Account {
+  accountID   String        @id
+  name        String
+  userID      String
+  balance     Float
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  createdBy   User          @relation(fields: [userID], references: [userID])
+  Transaction Transaction[]
+
+  @@index([userID])
+  @@map("account")
+}
+
+model Transaction {
+  transactionID String          @id
+  name          String
+  amount        Float
+  categoryID    String
+  ctaegory      Category        @relation(fields: [categoryID], references: [categoryID])
+  accountID     String
+  account       Account         @relation(fields: [accountID], references: [accountID])
+  userID        String
+  type          TransactionType
+  note          String?
+  date          DateTime
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  createdBy     User            @relation(fields: [userID], references: [userID])
+
+  @@index([userID])
+  @@map("transaction")
+}
+
+model Budget {
+  budgetID   String   @id
+  name       String
+  limit      Float
+  spent      Float
+  categoryID String
+  category   Category @relation(fields: [categoryID], references: [categoryID])
+  userID     String
+  startDate  DateTime
+  endDate    DateTime
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  createdBy  User     @relation(fields: [userID], references: [userID])
+
+  @@index([userID])
+  @@map("budget")
 }

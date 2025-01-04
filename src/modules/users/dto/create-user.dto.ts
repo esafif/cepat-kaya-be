@@ -1,10 +1,12 @@
+import { Role as UserRole } from '@prisma/client';
+
 export class CreateUserDto {
   username: string;
   password: string;
   email: string;
   phone: string;
   fullname: string;
-  role: string;
+  role: UserRole;
   isActive?: boolean;
   createdAt?: Date;
   updatedAt?: Date

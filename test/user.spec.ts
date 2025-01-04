@@ -55,7 +55,7 @@ describe('UserController Test', () => {
           email: 'test@test.com',
           phone: '082120015259',
           fullname: 'Safif Rafi Effendy',
-          role: 'owner',
+          role: 'OWNER',
         });
 
       expect(response.status).toBe(201);
