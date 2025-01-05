@@ -77,6 +77,7 @@ model Account {
   name        String
   userID      String
   balance     Float
+  icon        String?
   isActive    Boolean       @default(true)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
