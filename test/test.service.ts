@@ -9,6 +9,39 @@ export class TestService {
     private prismaService: PrismaService
   ) { }
 
+
+  async createUser2nd(username: string, email: string, phone: string, token: string) {
+    return await this.prismaService.user.create({
+      data: {
+        userID: Date.now().toString(),
+        username,
+        password: await bcrypt.hash("password321", 10),
+        email,
+        phone,
+        role: 'OWNER',
+        fullname: 'Test any',
+        token
+      }
+    })
+  }
+
+  async deleteUser2nd(username: string) {
+    await this.prismaService.user.deleteMany({
+      where: {
+        username,
+      }
+    })
+  }
+
+  async deleteBudget() {
+    await this.prismaService.budget.deleteMany({
+      where: {
+        name: 'testbudget'
+      }
+    })
+  }
+
+
   async deleteAccount() {
     await this.prismaService.account.deleteMany({
       where: {
@@ -71,10 +104,11 @@ export class TestService {
     })
   }
 
-  async deleteCategory() {
+  async deleteCategory(userID?: string) {
     await this.prismaService.category.deleteMany({
       where: {
-        name: 'testcategory'
+        name: 'testcategory',
+        userID
       }
     })
   }

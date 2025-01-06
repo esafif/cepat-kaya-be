@@ -170,7 +170,6 @@ describe('Account Test', () => {
         .delete(`/api/account/${accountID}`)
         .set('Authorization', 'testaccount');
 
-      console.log(response.body, "<<< response.body");
       expect(response.status).toBe(204);
     });
   })

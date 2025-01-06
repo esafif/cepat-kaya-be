@@ -5,6 +5,7 @@ import { CommonModule } from './common/common.module';
 import { UsersModule } from './modules/users/users.module';
 import { CategoryModule } from './modules/category/category.module';
 import { AccountModule } from './modules/account/account.module';
+import { BudgetModule } from './modules/budget/budget.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AccountModule } from './modules/account/account.module';
     UsersModule,
     CategoryModule,
     AccountModule,
+    BudgetModule
   ],
   controllers: [AppController],
   providers: [AppService],
