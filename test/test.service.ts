@@ -9,6 +9,56 @@ export class TestService {
     private prismaService: PrismaService
   ) { }
 
+  async deleteTransaction() {
+    await this.prismaService.transaction.deleteMany({
+      where: {
+        name: 'testtransaction'
+      }
+    })
+  }
+
+  async deleteUserTransaction() {
+    await this.prismaService.user.deleteMany({
+      where: {
+        username: 'testtransaction'
+      }
+    })
+  }
+
+  async createTransaction(userID: string, accountID: string, categoryID: string) {
+    return await this.prismaService.transaction.create({
+      data: {
+        transactionID: Date.now().toString(),
+        name: 'testtransaction',
+        amount: 1000,
+        type: 'EXPENSE',
+        note: 'testtransaction',
+        date: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        categoryID,
+        accountID,
+        userID,
+        isActive: true
+      }
+    })
+  }
+
+  async createUserTransaction() {
+    return await this.prismaService.user.create({
+      data: {
+        userID: Date.now().toString(),
+        username: 'testtransaction',
+        password: await bcrypt.hash("password321", 10),
+        email: 'transaction@mail.com',
+        phone: '1234567890',
+        role: 'OWNER',
+        fullname: 'Test Transaction',
+        token: 'test transaction'
+      }
+    })
+  }
+
 
   async createUser2nd(username: string, email: string, phone: string, token: string) {
     return await this.prismaService.user.create({

@@ -121,7 +121,6 @@ describe('Budget Test', () => {
           spent: 0,
         });
 
-      console.log(response.body);
       expect(response.status).toBe(400);
       expect(response.body.errors).toBeDefined();
     });
@@ -139,7 +138,6 @@ describe('Budget Test', () => {
           isActive: true,
         });
 
-      console.log(response.body);
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
       expect(response.body.data.limit).toBe(2000);
@@ -291,7 +289,6 @@ describe('Budget Test', () => {
         .get('/api/budget/invalid-id')
         .set('Authorization', 'testbudget');
 
-      console.log(response.body);
       expect(response.status).toBe(200);
       expect(response.body.data).toBe(null);
     });

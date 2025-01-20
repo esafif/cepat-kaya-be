@@ -61,7 +61,6 @@ describe('Category Test', () => {
           userId: userId, // Include userId in the request payload
         });
 
-      console.log(response.body, "<<< response.body");
       expect(response.status).toBe(201);
       expect(response.body).toBeDefined();
     });
@@ -120,8 +119,6 @@ describe('Category Test', () => {
           description: 'update description',
           type: 'EXPENSE',
         });
-
-      console.log(response.body, "<<< response.body");
 
       expect(response.status).toBe(200);
       expect(response.body).toBeDefined();
